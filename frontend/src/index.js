@@ -1,11 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, browserHistory } from 'react-router';
-import App from './components/App';
 
-ReactDOM.render((
-  <Router history={browserHistory}>
-    <Route path="/" component={App} />
-  </Router>
-  ), document.getElementById('root'),
+import { Provider } from 'react-redux';
+
+import App from './components/App';
+import store from './store';
+import Theme from './theme';
+
+import './style.css';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Theme>
+      <App />
+    </Theme>
+  </Provider>,
+  document.getElementById('root')
 );

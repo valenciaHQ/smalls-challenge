@@ -1,4 +1,4 @@
-version: '2'
+version: "3"
 networks:
   app-tier:
     driver: bridge
@@ -25,7 +25,7 @@ services:
       args:
         app_env: ${APP_ENV}
     volumes:
-      - ./api:/go/src/github.com/hugominas/gomore/api
+      - ./api:/var/lib/api
     ports:
       - "5000:8080"
     links:
@@ -39,6 +39,6 @@ services:
       args:
         app_env: ${APP_ENV}
     volumes:
-      - ./frontend/src:/frontend/src
+      - ./frontend/src:/var/lib/frontend
     ports:
       - "3000:3000"
