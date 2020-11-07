@@ -1,16 +1,10 @@
 FROM node
-
-ARG app_env
-ENV NODE_ENV $app_env
-
-
-RUN mkdir /frontend
  
 WORKDIR /frontend
-COPY package.json /frontend
+COPY package.json yarn.lock ./
  
-RUN yarn install --silent
-COPY . /frontend
+RUN yarn --silent
+COPY . ./
  
 RUN yarn build --silent
 EXPOSE 3000
