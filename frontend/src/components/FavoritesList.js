@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { fetchFavorites } from '../actions/favorites';
 import FavoriteSwitch from './FavoriteSwitch';
+import Loading from './Loading';
 
 const Container = styled.div`
   display: flex;
@@ -53,12 +55,27 @@ const mock = [
 ];
 
 export default () => {
-  const { data, isLoading } = useSelector((state) => state.posts);
+  const { data, isLoading, error } = useSelector((state) => state.posts);
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchFavorites());
-  });
+  if (error) {
+    toast.error('Your favs are not available  right now. Try again later!', {
+      position: 'bottom-center',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      progress: undefined
+    });
+  }
+
+  if (isLoading) {
+    return (
+      <Container style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Loading size={50} loading />
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <List>

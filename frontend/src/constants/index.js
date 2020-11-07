@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://www.reddit.com/r/all/top.json';
+export const REDDIT_URL = 'https://www.reddit.com/r/all/top.json';
 
 export const FETCH_POST_REQUEST = 'FETCH_POST_REQUEST';
 export const FETCH_POST_SUCCESS = 'FETCH_POST_SUCCESS';

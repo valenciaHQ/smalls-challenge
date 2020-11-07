@@ -9,6 +9,7 @@ import Theme from './theme';
 
 import './style.css';
 import 'react-toggle/style.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.render(
   <Provider store={store}>

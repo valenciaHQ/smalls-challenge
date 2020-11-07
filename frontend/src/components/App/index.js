@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
+import { ToastContainer } from 'react-toastify';
 
 import { fetchFavorites } from '../../actions/favorites';
 import { fetchTopPosts } from '../../actions/posts';
@@ -37,6 +38,17 @@ export default () => {
         <FavoritesContext.Provider value={{ show: showFavorites, toogleFavorites }}>
           <PostList isMobile={!isTabletOrBigger} />
           {showFavorites ? <FavoritesList /> : <PostDetail />}
+          <ToastContainer
+            position="bottom-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </FavoritesContext.Provider>
       </DetailContext.Provider>
     </Container>

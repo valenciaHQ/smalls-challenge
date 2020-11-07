@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import {
-  BASE_URL,
+  REDDIT_URL,
   FETCH_POST_REQUEST,
   FETCH_POST_SUCCESS,
   FETCH_POST_ERROR,
@@ -13,7 +13,7 @@ import {
 
 export const fetchTopPosts = (nextItem) => async (dispatch) => {
   dispatch({ type: FETCH_POST_REQUEST });
-  let url = `${BASE_URL}?limit=${POST_LIMIT}`;
+  let url = `${REDDIT_URL}?limit=${POST_LIMIT}`;
   if (nextItem) {
     url = `${url}&after=${nextItem}`;
   }
