@@ -1,3 +1,3 @@
 FROM bitnami/mongodb:latest
 
-EXPOSE 27017
+EXPOSE 33335

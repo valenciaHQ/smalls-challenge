@@ -9,13 +9,7 @@ services:
     volumes:
       - ./db/mongodb:/var/lib/mongodb
     ports:
-      - "27017:27017"
-    environment:
-      - MONGODB_USERNAME=${MONGODB_USERNAME}
-      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
-      - MONGODB_DATABASE=${MONGODB_DATABASE}
-      - MONGODB_ROOT_USERNAME=${MONGODB_ROOT_USERNAME}
-      - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+      - "33335:27017"
     networks:
       - app-tier
 
@@ -24,10 +18,12 @@ services:
       context: ./api
       args:
         app_env: ${APP_ENV}
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
     volumes:
-      - ./api:/var/lib/api
+      - ./api:/bin/api
     ports:
-      - "5000:8080"
+      - "8080:8080"
     links:
       - mongodb
     networks:
@@ -38,6 +34,8 @@ services:
       context: ./frontend
       args:
         app_env: ${APP_ENV}
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
     volumes:
       - ./frontend/src:/var/lib/frontend
     ports:

@@ -8,6 +8,7 @@ import store from './store';
 import Theme from './theme';
 
 import './style.css';
+import 'react-toggle/style.css';
 
 ReactDOM.render(
   <Provider store={store}>

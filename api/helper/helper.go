@@ -15,17 +15,13 @@ import (
 )
 
 // ConnectDB : This is helper function to connect mongoDB
-// If you want to export your function. You must to start upper case function name. Otherwise you won't see your function when you import that on other class.
 func ConnectDB() *mongo.Collection {
 	config := GetConfiguration()
+
 	// Set client options
-	clientOptions := options.Client().ApplyURI(config.ConnectionString)
-
-	// Connect to MongoDB
+	clientOptions := options.Client().ApplyURI("mongodb://mongodb")
+	//clientOptions := options.Client().ApplyURI("mongodb://127.0.0.1:33333/")
 	client, err := mongo.Connect(context.TODO(), clientOptions)
-
-	fmt.Println(config.ConnectionString)
-	fmt.Println(config.Port)
 
 	if err != nil {
 		log.Fatal(err)
@@ -33,7 +29,9 @@ func ConnectDB() *mongo.Collection {
 
 	fmt.Println("Connected to MongoDB!")
 
-	collection := client.Database("go_rest_api").Collection("favorites")
+	fmt.Println(client.Database(config.Database))
+
+	collection := client.Database(config.Database).Collection(config.FavoritesCollection)
 
 	return collection
 }
@@ -63,12 +61,13 @@ func GetError(err error, w http.ResponseWriter) {
 // Configuration model
 type Configuration struct {
 	Port             string
-	ConnectionString string
+	Database 		 string
+	FavoritesCollection string
 }
 
 // GetConfiguration method basically populate configuration information from .env and return Configuration model
 func GetConfiguration() Configuration {
-	err := godotenv.Load("../../.env")
+	err := godotenv.Load("./.env")
 
 	if err != nil {
 		log.Fatalf("Error loading .env file")
@@ -76,7 +75,8 @@ func GetConfiguration() Configuration {
 
 	configuration := Configuration{
 		os.Getenv("PORT"),
-		os.Getenv("CONNECTION_STRING"),
+		os.Getenv("DATABASE"),
+		os.Getenv("FAVORITES_COLLECTION"),
 	}
 
 	return configuration

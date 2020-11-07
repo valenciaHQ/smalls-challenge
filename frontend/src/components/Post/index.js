@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 import moment from 'moment';
 import isUrl from 'is-url';
 import { useDispatch } from 'react-redux';
+import { deleteFavorite, getFavorite, saveFavorite } from '../../actions/favorites';
 
 import Dismiss from '../Dismiss';
 
@@ -34,7 +35,10 @@ const Post = ({ data, dismissed }) => {
   };
 
   const handleToogleFavorite = () => {
-    console.log('handleToogleFavorite');
+    if (getFavorite(entity.id)) {
+      dispatch(deleteFavorite(id));
+    }
+    dispatch(saveFavorite(entity));
   };
 
   const handleDismiss = () => {

@@ -9,9 +9,9 @@ import (
 
 	"./helper"
 	"./models"
+	"github.com/rs/cors"
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )	
 
 //Connection mongoDB with helper class
@@ -22,7 +22,6 @@ func getFavorites(w http.ResponseWriter, r *http.Request) {
 
 	// we created Favorite array
 	var favorites []models.Favorite
-
 	// bson.M{},  we passed empty filter. So we want to get all data.
 	cur, err := collection.Find(context.TODO(), bson.M{})
 
@@ -39,15 +38,15 @@ func getFavorites(w http.ResponseWriter, r *http.Request) {
 	for cur.Next(context.TODO()) {
 
 		// create a value into which the single document can be decoded
-		var book models.Favorite
+		var favorite models.Favorite
 		// & character returns the memory address of the following variable.
-		err := cur.Decode(&book) // decode similar to deserialize process.
+		err := cur.Decode(&favorite) // decode similar to deserialize process.
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		// add item our array
-		favorites = append(favorites, book)
+		favorites = append(favorites, favorite)
 	}
 
 	if err := cur.Err(); err != nil {
@@ -57,16 +56,40 @@ func getFavorites(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(favorites) // encode similar to serialize process.
 }
 
+func getFavorite(w http.ResponseWriter, r *http.Request) {
+	// set header.
+	w.Header().Set("Content-Type", "application/json")
+
+	var favorite models.Favorite
+	// we get params with mux.
+	var params = mux.Vars(r)
+
+	// string to primitive.ObjectID
+	id, _ :=  params["id"]
+
+	// We create filter. If it is unnecessary to sort data for you, you can use bson.M{}
+	filter := bson.M{"postid": id}
+
+	err := collection.FindOne(context.TODO(), filter).Decode(&favorite)
+
+	if err != nil {
+		helper.GetError(err, w)
+		return
+	}
+
+	json.NewEncoder(w).Encode(favorite)
+  }
+
 func createFavorite(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	var book models.Favorite
+	var favorite models.Favorite
 
 	// we decode our body request params
-	_ = json.NewDecoder(r.Body).Decode(&book)
+	_ = json.NewDecoder(r.Body).Decode(&favorite)
 
-	// insert our book model.
-	result, err := collection.InsertOne(context.TODO(), book)
+	// insert our favorite model.
+	result, err := collection.InsertOne(context.TODO(), favorite)
 
 	if err != nil {
 		helper.GetError(err, w)
@@ -77,17 +100,12 @@ func createFavorite(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteFavorite(w http.ResponseWriter, r *http.Request) {
-	// Set header
 	w.Header().Set("Content-Type", "application/json")
 
-	// get params
 	var params = mux.Vars(r)
+	id := params["id"]
 
-	// string to primitve.ObjectID
-	id, err := primitive.ObjectIDFromHex(params["id"])
-
-	// prepare filter.
-	filter := bson.M{"_id": id}
+	filter := bson.M{"postid": id}
 
 	deleteResult, err := collection.DeleteOne(context.TODO(), filter)
 
@@ -103,11 +121,12 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/api/favorites", getFavorites).Methods("GET")
-	r.HandleFunc("/api/favorites", createFavorite).Methods("POST")
-	r.HandleFunc("/api/favorites/{id}", deleteFavorite).Methods("DELETE")
-
+	r.HandleFunc("/api/favorites/{id:[0-9]+}", getFavorite).Methods("GET")
+	r.HandleFunc("/api/favorites", createFavorite).Methods("POST") 
+	r.HandleFunc("/api/favorites/{id:[0-9]+}", deleteFavorite).Methods("DELETE") 
+ 
 	config := helper.GetConfiguration()
-	fmt.Println(config)
-	log.Fatal(http.ListenAndServe(config.Port, r))
-
+	handler := cors.AllowAll().Handler(r)
+	fmt.Println("Listening on port: ", config.Port)
+	log.Fatal(http.ListenAndServe(config.Port, handler))
 }

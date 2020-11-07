@@ -1,7 +1,9 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+
 import { DetailContext } from '../appContexts';
+import FavoriteSwitch from './FavoriteSwitch';
 
 const Container = styled.div`
   display: flex;
@@ -50,6 +52,7 @@ export default () => {
           </Footer>
         </>
       )}
+      <FavoriteSwitch />
     </Container>
   );
 };
