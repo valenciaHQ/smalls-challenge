@@ -3,7 +3,7 @@ FROM golang
 ARG app_env
 ENV APP_ENV $app_env
 
-ADD . /api/
+ADD . .
 WORKDIR /api
 
 RUN	go get go.mongodb.org/mongo-driver/mongo
