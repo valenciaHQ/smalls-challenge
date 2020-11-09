@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useContext, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchTopPosts } from '../../actions/posts';
 
 import Post from '../Post';
 import Dismiss from '../Dismiss';
@@ -19,7 +20,7 @@ import {
   ToogleMenuContainer
 } from './styled';
 
-export default ({ isMobile }) => {
+const PostList = ({ isMobile }) => {
   const { data, isLoading, allDismissed } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const { showDetailFor } = useContext(DetailContext);
@@ -78,3 +79,5 @@ export default ({ isMobile }) => {
     )
   );
 };
+
+export default React.memo(PostList);

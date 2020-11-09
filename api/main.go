@@ -21,7 +21,9 @@ func getFavorites(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	// we created Favorite array
-	var favorites []models.Favorite
+	var Favorites []models.Favorite
+	Favorites = make([]models.Favorite, 0)
+
 	// bson.M{},  we passed empty filter. So we want to get all data.
 	cur, err := collection.Find(context.TODO(), bson.M{})
 
@@ -36,31 +38,30 @@ func getFavorites(w http.ResponseWriter, r *http.Request) {
 	defer cur.Close(context.TODO())
 
 	for cur.Next(context.TODO()) {
-
 		// create a value into which the single document can be decoded
-		var favorite models.Favorite
+		var Favorite models.Favorite
 		// & character returns the memory address of the following variable.
-		err := cur.Decode(&favorite) // decode similar to deserialize process.
+		err := cur.Decode(&Favorite) // decode similar to deserialize process.
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		// add item our array
-		favorites = append(favorites, favorite)
+		Favorites = append(Favorites, Favorite)
 	}
 
 	if err := cur.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	json.NewEncoder(w).Encode(favorites) // encode similar to serialize process.
+	json.NewEncoder(w).Encode(Favorites) // encode similar to serialize process.
 }
 
 func getFavorite(w http.ResponseWriter, r *http.Request) {
 	// set header.
 	w.Header().Set("Content-Type", "application/json")
 
-	var favorite models.Favorite
+	var Favorite models.Favorite
 	// we get params with mux.
 	var params = mux.Vars(r)
 
@@ -70,14 +71,14 @@ func getFavorite(w http.ResponseWriter, r *http.Request) {
 	// We create filter. If it is unnecessary to sort data for you, you can use bson.M{}
 	filter := bson.M{"postid": id}
 
-	err := collection.FindOne(context.TODO(), filter).Decode(&favorite)
+	err := collection.FindOne(context.TODO(), filter).Decode(&Favorite) 
 
 	if err != nil {
-		helper.GetError(err, w)
-		return
+		w.WriteHeader(http.StatusNotFound)
+        json.NewEncoder(w)
 	}
 
-	json.NewEncoder(w).Encode(favorite)
+	json.NewEncoder(w).Encode(Favorite)
   }
 
 func createFavorite(w http.ResponseWriter, r *http.Request) {

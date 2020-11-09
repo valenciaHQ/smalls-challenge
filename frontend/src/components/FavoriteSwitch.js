@@ -4,14 +4,16 @@ import styled, { css } from 'styled-components';
 import Toggle from 'react-toggle';
 import { useMediaQuery } from 'react-responsive';
 
-import { FavoritesContext } from '../appContexts';
 import { DEVICE_SIZE } from '../constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { showFavorites } from '../actions/favorites';
 
 const ToogleFavorites = styled.div`
   position: fixed;
   bottom: 5%;
   right: 5%;
   text-align: end;
+  z-index: 2;
 
   ${({ isMobile }) =>
     isMobile &&
@@ -21,12 +23,15 @@ const ToogleFavorites = styled.div`
 `;
 
 export default () => {
-  const { show, toogleFavorites } = useContext(FavoritesContext);
+  const dispatch = useDispatch();
+  const { show } = useSelector((state) => state.favorites);
+
   const isTabletOrBigger = useMediaQuery({ minDeviceWidth: DEVICE_SIZE.tablet });
+  const handleToogle = () => dispatch(showFavorites());
 
   return (
     <ToogleFavorites isMobile={isTabletOrBigger}>
-      <Toggle defaultChecked={show} onChange={toogleFavorites} />
+      <Toggle defaultChecked={show} onChange={handleToogle} />
       <div>Toogle favorites</div>
     </ToogleFavorites>
   );

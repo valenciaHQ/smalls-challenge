@@ -2,4 +2,3 @@
 import React from 'react';
 
 export const DetailContext = React.createContext();
-export const FavoritesContext = React.createContext();

@@ -23,6 +23,7 @@ const posts = (state = initialState, action) => {
         isLoading: true
       };
     case FETCH_POST_SUCCESS: {
+      console.log('FETCH_POST_SUCCESS: ', FETCH_POST_SUCCESS);
       const data = [...state.data, ...action.payload];
       return {
         ...state,

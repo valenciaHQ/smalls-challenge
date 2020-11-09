@@ -36,26 +36,13 @@ const Entry = styled.div`
   margin: 5px;
 `;
 
-const mock = [
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' },
-  { title: 'asdasdasdasdasd', author: 'lalalalalalalala' }
-];
-
 export default () => {
-  const { data, isLoading, error } = useSelector((state) => state.posts);
+  const { data, isLoading, error } = useSelector((state) => state.favorites);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFavorites());
+  }, []);
 
   if (error) {
     toast.error('Your favs are not available  right now. Try again later!', {
@@ -76,17 +63,24 @@ export default () => {
     );
   }
 
+  if (data.length === 0) {
+    return (
+      <Container style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <p>Sorry! You dont have favorites :(</p>
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <List>
-        {mock.map((fav) => (
+        {data.map((fav) => (
           <Favorite>
             <Entry>{fav.title}</Entry>
             <Entry>{fav.author}</Entry>
           </Favorite>
         ))}
       </List>
-      <FavoriteSwitch />
     </Container>
   );
 };

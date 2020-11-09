@@ -1,9 +1,9 @@
 FROM golang
- 
+
 ARG app_env
 ENV APP_ENV $app_env
 
-ADD . .
+ADD . /api
 WORKDIR /api
 
 RUN	go get go.mongodb.org/mongo-driver/mongo
