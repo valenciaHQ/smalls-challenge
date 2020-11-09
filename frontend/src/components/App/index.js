@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
-
-import { fetchTopPosts } from '../../actions/posts';
 
 import PostDetail from '../PostDetail';
 import PostList from '../PostList';
@@ -20,24 +17,25 @@ const Container = styled.div`
 `;
 
 export default () => {
-  const dispatch = useDispatch();
-  const [showDetailed, setShowDetailed] = useState();
-  const { show: showFavorites } = useSelector((state) => state.favorites);
+  const [showDetailed, setShowDetailed] = useState(false);
+  const [showFavorites, setShowFavorites] = useState(false);
 
   const isTabletOrBigger = useMediaQuery({ minDeviceWidth: DEVICE_SIZE.tablet });
   const showDetailFor = (entity) => setShowDetailed(entity);
+  const toogleShowFavorites = () => setShowFavorites(!showFavorites);
 
-  useEffect(() => {
-    dispatch(fetchTopPosts());
-  }, [dispatch]);
-
-  console.log('show favorites: ', showFavorites);
   return (
     <Container>
       <DetailContext.Provider value={{ entity: showDetailed, showDetailFor }}>
-        <PostList isMobile={!isTabletOrBigger} />
-        {showFavorites ? <FavoritesList /> : <PostDetail />}
-        <FavoriteSwitch />
+        {showFavorites ? (
+          <FavoritesList />
+        ) : (
+          <>
+            <PostList isMobile={!isTabletOrBigger} />
+            <PostDetail />
+          </>
+        )}
+        <FavoriteSwitch handleToogle={toogleShowFavorites} />
         <ToastContainer
           position="bottom-center"
           autoClose={5000}

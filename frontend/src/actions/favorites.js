@@ -6,7 +6,6 @@ import {
   FETCH_FAVORITE_REQUEST,
   FETCH_FAVORITE_SUCCESS,
   FETCH_FAVORITE_ERROR,
-  SHOW_FAVORITES,
   FAVORITE_TRX_REQUEST,
   FAVORITE_TRX_SUCCESS,
   FAVORITE_TRX_ERROR
@@ -21,8 +20,7 @@ export const fetchFavorites = () => async (dispatch) => {
       payload: response.data
     });
   } catch (err) {
-    dispatch({ type: FETCH_FAVORITES_ERROR });
-    return null;
+    return dispatch({ type: FETCH_FAVORITES_ERROR });
   }
 };
 
@@ -36,8 +34,7 @@ export const getFavorite = (id) => async (dispatch) => {
       payload: response.data
     });
   } catch (err) {
-    dispatch({ type: FETCH_FAVORITE_ERROR });
-    return null;
+    return dispatch({ type: FETCH_FAVORITE_ERROR });
   }
 };
 
@@ -55,8 +52,7 @@ export const saveFavorite = (favorite) => async (dispatch) => {
 
     return dispatch({ type: FAVORITE_TRX_SUCCESS });
   } catch (err) {
-    dispatch({ type: FAVORITE_TRX_ERROR });
-    return null;
+    return dispatch({ type: FAVORITE_TRX_ERROR });
   }
 };
 
@@ -74,11 +70,6 @@ export const deleteFavorite = (id) => async (dispatch) => {
 
     return dispatch({ type: FAVORITE_TRX_ERROR });
   } catch (err) {
-    dispatch({ type: FAVORITE_TRX_ERROR });
-    return null;
+    return dispatch({ type: FAVORITE_TRX_ERROR });
   }
 };
-
-export const showFavorites = () => ({
-  type: SHOW_FAVORITES
-});

@@ -22,12 +22,10 @@ const ToogleFavorites = styled.div`
     `}
 `;
 
-export default () => {
-  const dispatch = useDispatch();
+export default ({ handleToogle }) => {
   const { show } = useSelector((state) => state.favorites);
 
   const isTabletOrBigger = useMediaQuery({ minDeviceWidth: DEVICE_SIZE.tablet });
-  const handleToogle = () => dispatch(showFavorites());
 
   return (
     <ToogleFavorites isMobile={isTabletOrBigger}>

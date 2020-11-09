@@ -18,6 +18,7 @@ import {
   LoadingWrapper,
   ToogleMenuContainer
 } from './styled';
+import { fetchTopPosts } from '../../actions/posts';
 
 const PostList = ({ isMobile }) => {
   const { data, isLoading, allDismissed } = useSelector((state) => state.posts);
@@ -25,6 +26,10 @@ const PostList = ({ isMobile }) => {
   const { showDetailFor } = useContext(DetailContext);
 
   const [showList, setShowList] = useState(!isMobile);
+
+  useEffect(() => {
+    dispatch(fetchTopPosts());
+  }, [dispatch]);
 
   useEffect(() => {
     setShowList(!isMobile);

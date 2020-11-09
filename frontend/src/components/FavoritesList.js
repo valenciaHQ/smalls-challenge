@@ -44,7 +44,7 @@ export default () => {
   }, [show, dispatch]);
 
   if (error) {
-    toast.error('Your favs are not available  right now. Try again later!', {
+    toast.error('Your favs are not available right now. Try again later!', {
       position: 'bottom-center',
       autoClose: 5000,
       hideProgressBar: false,
@@ -65,7 +65,7 @@ export default () => {
   if (data && data.length === 0) {
     return (
       <Container style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <p>Sorry! You dont have favorites :(</p>
+        <p>Sorry! You dont have favorites yet :(</p>
       </Container>
     );
   }
