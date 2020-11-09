@@ -29,9 +29,8 @@ const favorites = (state = initialState, action) => {
     case FETCH_FAVORITES_ERROR:
       return { ...state, error: true, isLoading: false };
 
-    case SHOW_FAVORITES: {
+    case SHOW_FAVORITES:
       return { ...state, show: !state.show };
-    }
 
     default:
       return initialState;

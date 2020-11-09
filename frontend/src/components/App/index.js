@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 
-import {fetchTopPosts} from '../../actions/posts';
+import { fetchTopPosts } from '../../actions/posts';
 
 import PostDetail from '../PostDetail';
 import PostList from '../PostList';
@@ -29,9 +29,9 @@ export default () => {
 
   useEffect(() => {
     dispatch(fetchTopPosts());
-  }, []);
+  }, [dispatch]);
 
-  console.log("show favorites: ", showFavorites)
+  console.log('show favorites: ', showFavorites);
   return (
     <Container>
       <DetailContext.Provider value={{ entity: showDetailed, showDetailFor }}>

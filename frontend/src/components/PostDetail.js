@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { DetailContext } from '../appContexts';
-import FavoriteSwitch from './FavoriteSwitch';
 
 const Container = styled.div`
   display: flex;

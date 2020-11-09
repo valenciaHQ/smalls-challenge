@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import React, { useContext } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import Toggle from 'react-toggle';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 
 import { DEVICE_SIZE } from '../constants';
-import { useDispatch, useSelector } from 'react-redux';
 import { showFavorites } from '../actions/favorites';
 
 const ToogleFavorites = styled.div`

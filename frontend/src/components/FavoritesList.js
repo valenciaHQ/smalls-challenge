@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { fetchFavorites } from '../actions/favorites';
-import FavoriteSwitch from './FavoriteSwitch';
 import Loading from './Loading';
 
 const Container = styled.div`
@@ -37,12 +36,12 @@ const Entry = styled.div`
 `;
 
 export default () => {
-  const { data, isLoading, error } = useSelector((state) => state.favorites);
+  const { data, isLoading, error, show } = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchFavorites());
-  }, []);
+  }, [show, dispatch]);
 
   if (error) {
     toast.error('Your favs are not available  right now. Try again later!', {
@@ -63,7 +62,7 @@ export default () => {
     );
   }
 
-  if (data.length === 0) {
+  if (data && data.length === 0) {
     return (
       <Container style={{ alignItems: 'center', justifyContent: 'center' }}>
         <p>Sorry! You dont have favorites :(</p>

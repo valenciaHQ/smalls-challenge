@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useContext, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchTopPosts } from '../../actions/posts';
 
 import Post from '../Post';
 import Dismiss from '../Dismiss';

@@ -6,13 +6,10 @@ import {
   FETCH_FAVORITE_REQUEST,
   FETCH_FAVORITE_SUCCESS,
   FETCH_FAVORITE_ERROR,
-  SAVE_FAVORITE_REQUEST,
-  SAVE_FAVORITE_SUCCESS,
-  SAVE_FAVORITE_ERROR,
-  DELETE_FAVORITE_REQUEST,
-  DELETE_FAVORITE_SUCCESS,
-  DELETE_FAVORITE_ERROR,
-  SHOW_FAVORITES
+  SHOW_FAVORITES,
+  FAVORITE_TRX_REQUEST,
+  FAVORITE_TRX_SUCCESS,
+  FAVORITE_TRX_ERROR
 } from '../constants';
 
 export const fetchFavorites = () => async (dispatch) => {
@@ -46,38 +43,38 @@ export const getFavorite = (id) => async (dispatch) => {
 
 export const saveFavorite = (favorite) => async (dispatch) => {
   try {
-    dispatch({ type: SAVE_FAVORITE_REQUEST });
+    dispatch({ type: FAVORITE_TRX_REQUEST });
     const response = await api.post('favorites', favorite);
 
     if (response.status === 201) {
       return dispatch({
-        type: SAVE_FAVORITE_SUCCESS,
+        type: FAVORITE_TRX_SUCCESS,
         payload: response.data.id
       });
     }
 
-    return dispatch({ type: SAVE_FAVORITE_ERROR });
+    return dispatch({ type: FAVORITE_TRX_SUCCESS });
   } catch (err) {
-    dispatch({ type: SAVE_FAVORITE_ERROR });
+    dispatch({ type: FAVORITE_TRX_ERROR });
     return null;
   }
 };
 
 export const deleteFavorite = (id) => async (dispatch) => {
   try {
-    dispatch({ type: DELETE_FAVORITE_REQUEST });
+    dispatch({ type: FAVORITE_TRX_REQUEST });
     const response = await api.delete(`favorites/${id}`);
 
     if (response.status === 204) {
       return dispatch({
-        type: DELETE_FAVORITE_SUCCESS,
+        type: FAVORITE_TRX_SUCCESS,
         payload: response.data.id
       });
     }
 
-    return dispatch({ type: DELETE_FAVORITE_ERROR });
+    return dispatch({ type: FAVORITE_TRX_ERROR });
   } catch (err) {
-    dispatch({ type: DELETE_FAVORITE_ERROR });
+    dispatch({ type: FAVORITE_TRX_ERROR });
     return null;
   }
 };

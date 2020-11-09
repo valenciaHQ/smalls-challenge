@@ -35,10 +35,10 @@ const Post = ({ data, dismissed }) => {
   };
 
   const handleToogleFavorite = () => {
-    if (getFavorite(entity.id)) {
+    if (getFavorite(id)) {
       dispatch(deleteFavorite(id));
     }
-    dispatch(saveFavorite(entity));
+    dispatch(saveFavorite({ PostId: id, Title: title, Author: author }));
   };
 
   const handleDismiss = () => {
