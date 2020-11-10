@@ -71,6 +71,7 @@ func getFavorite(w http.ResponseWriter, r *http.Request) {
 	// We create filter. If it is unnecessary to sort data for you, you can use bson.M{}
 	filter := bson.M{"postid": id}
 
+	fmt.Print("filter: ", filter);
 	err := collection.FindOne(context.TODO(), filter).Decode(&Favorite) 
 
 	if err != nil {
@@ -122,9 +123,9 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/api/favorites", getFavorites).Methods("GET")
-	r.HandleFunc("/api/favorites/{id:[0-9]+}", getFavorite).Methods("GET")
+	r.HandleFunc("/api/favorites/{id}", getFavorite).Methods("GET")
 	r.HandleFunc("/api/favorites", createFavorite).Methods("POST") 
-	r.HandleFunc("/api/favorites/{id:[0-9]+}", deleteFavorite).Methods("DELETE") 
+	r.HandleFunc("/api/favorites/{id}", deleteFavorite).Methods("DELETE") 
  
 	config := helper.GetConfiguration()
 	handler := cors.AllowAll().Handler(r)

@@ -32,3 +32,18 @@ export const DEVICE = {
   mobileS: `(min-width: ${DEVICE_SIZE.mobileS})`,
   tablet: `(min-width: ${DEVICE_SIZE.tablet})`
 };
+
+export const FAVORITES_SERVICE_NOT_AVAILABLE =
+  'Your favs are not available right now. Try again later!';
+export const FAVORITE_TRX_SUCCESS_MSG = 'Success!';
+export const TOAST_CONFIGURATION = {
+  position: 'bottom-center',
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  progress: undefined
+};
+
+export const toastSuccessId = 'toast-success-id';
+export const toastErrorId = 'toast-error-id';

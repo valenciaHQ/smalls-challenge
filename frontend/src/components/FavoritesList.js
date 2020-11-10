@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { fetchFavorites } from '../actions/favorites';
+import { FAVORITES_SERVICE_NOT_AVAILABLE, toastErrorId, TOAST_CONFIGURATION } from '../constants';
 import Loading from './Loading';
 
 const Container = styled.div`
@@ -44,14 +45,7 @@ export default () => {
   }, [show, dispatch]);
 
   if (error) {
-    toast.error('Your favs are not available right now. Try again later!', {
-      position: 'bottom-center',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      progress: undefined
-    });
+    toast.error(FAVORITES_SERVICE_NOT_AVAILABLE, { ...TOAST_CONFIGURATION, toastId: toastErrorId });
   }
 
   if (isLoading) {
@@ -65,7 +59,7 @@ export default () => {
   if (data && data.length === 0) {
     return (
       <Container style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <p>Sorry! You dont have favorites yet :(</p>
+        <p>Sorry! You don't have any favorites yet :(</p>
       </Container>
     );
   }

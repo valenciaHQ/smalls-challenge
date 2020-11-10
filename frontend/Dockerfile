@@ -1,7 +1,7 @@
 FROM node
 
 WORKDIR /frontend
-COPY package.json  /frontend
+COPY package.json  yarn.lock /frontend/
 
 RUN yarn --silent
 COPY . ./

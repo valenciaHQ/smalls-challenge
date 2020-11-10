@@ -28,7 +28,7 @@ export const getFavorite = (id) => async (dispatch) => {
   try {
     dispatch({ type: FETCH_FAVORITE_REQUEST });
     const response = await api.get(`favorites/${id}`);
-
+    console.log('Response: ', response);
     return dispatch({
       type: FETCH_FAVORITE_SUCCESS,
       payload: response.data

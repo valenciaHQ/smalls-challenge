@@ -2,11 +2,10 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import Toggle from 'react-toggle';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 
 import { DEVICE_SIZE } from '../constants';
-import { showFavorites } from '../actions/favorites';
 
 const ToogleFavorites = styled.div`
   position: fixed;

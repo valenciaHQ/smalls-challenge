@@ -28,7 +28,7 @@ const favorites = (state = initialState, action) => {
       return { ...state, error: true, isLoading: false };
 
     default:
-      return initialState;
+      return state;
   }
 };
 
