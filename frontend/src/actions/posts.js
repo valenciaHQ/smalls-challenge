@@ -26,7 +26,6 @@ export const fetchTopPosts = (nextItem) => async (dispatch) => {
   try {
     const response = await axios.get(url);
     const posts = response.data.data.children.map((child) => ({ ...child.data }));
-    console.log('posts: ', posts);
     const lastFetched = response.data.data.after;
 
     try {
@@ -34,15 +33,12 @@ export const fetchTopPosts = (nextItem) => async (dispatch) => {
         getFavoritePromises.push(api.get(`favorites/${id}`));
       });
 
-      const responseFavorites = await axios.all(getFavoritePromises);
-      console.log('responseFavorites: ', responseFavorites);
-
-      /*
-      result.forEach(({ data }) => {
-        if (data) {
-          favorites.push(data);
-        }
-      });
+      axios
+        .all(getFavoritePromises)
+        .then(axios.spread((...responses) => responses.forEach((aFav) => favorites.push(aFav))))
+        .catch((errors) => {
+          console.warn('Not found: ', errors);
+        });
 
       posts.map((post) =>
         favorites.forEach((favorite) => {
@@ -52,7 +48,6 @@ export const fetchTopPosts = (nextItem) => async (dispatch) => {
           return post;
         })
       );
-      */
     } catch (e) {
       console.warn(e);
     }
