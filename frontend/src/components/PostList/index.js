@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useContext, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import uuid from 'react-uuid';
 
 import Post from '../Post';
 import Dismiss from '../Dismiss';
@@ -61,7 +60,7 @@ const PostList = ({ isMobile }) => {
           </Title>
           <ListWrapper>
             {data.map((post) => (
-              <Post key={uuid.v4()} data={post} dismissed={allDismissed} />
+              <Post data={post} dismissed={allDismissed} />
             ))}
             {isLoading ? (
               <LoadingWrapper>

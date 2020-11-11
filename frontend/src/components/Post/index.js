@@ -31,6 +31,7 @@ import {
   toastErrorId,
   toastSuccessId
 } from '../../constants';
+import { fetchTopPosts } from '../../actions/posts';
 
 const Post = ({ data, dismissed }) => {
   const dispatch = useDispatch();
@@ -39,17 +40,24 @@ const Post = ({ data, dismissed }) => {
   const [isDismissed, setIsDismissed] = useState(dismissed);
   const { trxSuccess, trxError, error } = useSelector((state) => state.favorite);
 
+  const [showFavved, setShowFaved] = useState(favorite);
+
   const handleReadClick = () => {
     showDetailFor({ id, title, author, thumbnail });
     dispatch({ type: SET_READED, payload: id });
   };
 
   const handleToogleFavorite = () => {
-    if (favorite) {
+    if (showFavved) {
+      console.log('DELETE');
       dispatch(deleteFavorite(id));
+      setShowFaved(false);
     } else {
+      console.log('SAVE');
       dispatch(saveFavorite({ PostId: id, Title: title, Author: author }));
+      setShowFaved(true);
     }
+    dispatch(fetchTopPosts());
   };
 
   const handleDismiss = () => {
@@ -74,10 +82,10 @@ const Post = ({ data, dismissed }) => {
     <Container dismissed={isDismissed}>
       <Header>
         <Column style={{ marginRight: '10px' }}>
-          {favorite ? (
-            <EmptyHeart onClick={handleToogleFavorite} />
-          ) : (
+          {showFavved ? (
             <FilledHeart onClick={handleToogleFavorite} />
+          ) : (
+            <EmptyHeart onClick={handleToogleFavorite} />
           )}
           <Dot readed={readed} />
         </Column>

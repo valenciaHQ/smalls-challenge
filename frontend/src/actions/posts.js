@@ -14,8 +14,13 @@ import {
   FETCH_FAVORITE_ERROR
 } from '../constants';
 
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
+
 export const fetchTopPosts = (nextItem) => async (dispatch) => {
-  const getFavoritePromises = [];
   const favorites = [];
 
   dispatch({ type: FETCH_POST_REQUEST });
@@ -28,37 +33,29 @@ export const fetchTopPosts = (nextItem) => async (dispatch) => {
     const posts = response.data.data.children.map((child) => ({ ...child.data }));
     const lastFetched = response.data.data.after;
 
-    try {
-      posts.forEach(({ id }) => {
-        getFavoritePromises.push(api.get(`favorites/${id}`));
-      });
-
-      axios
-        .all(getFavoritePromises)
-        .then(axios.spread((...responses) => responses.forEach((aFav) => favorites.push(aFav))))
-        .catch((errors) => {
-          console.warn('Not found: ', errors);
-        });
-
-      posts.map((post) =>
-        favorites.forEach((favorite) => {
-          if (post.id === favorite.id) {
-            return { ...post, favorite: true };
-          }
-          return post;
-        })
-      );
-    } catch (e) {
-      console.warn(e);
+    for (const post of posts) {
+      try {
+        const result = await api.get(`favorites/${post.id}`);
+        favorites.push(result.data);
+      } catch (e) {}
     }
+
+    const formattedPosts = posts.map((post) => {
+      if (favorites.some((fav) => fav.postid === post.id)) {
+        const result = { ...post, favorite: true };
+        console.log('result: ', result);
+        return result;
+      }
+      return post;
+    });
 
     return dispatch({
       type: FETCH_POST_SUCCESS,
       lastFetched,
-      payload: posts
+      payload: formattedPosts
     });
   } catch (err) {
-    console.error(err);
+    console.error('Post error: ', err);
     return dispatch({ type: FETCH_POST_ERROR, err });
   }
 };

@@ -27,14 +27,8 @@ export default () => {
   return (
     <Container>
       <DetailContext.Provider value={{ entity: showDetailed, showDetailFor }}>
-        {showFavorites ? (
-          <FavoritesList />
-        ) : (
-          <>
-            <PostList isMobile={!isTabletOrBigger} />
-            <PostDetail />
-          </>
-        )}
+        <PostList isMobile={!isTabletOrBigger} />
+        {showFavorites ? <FavoritesList /> : <PostDetail />}
         <FavoriteSwitch handleToogle={toogleShowFavorites} />
         <ToastContainer
           position="bottom-center"

@@ -61,14 +61,10 @@ export const deleteFavorite = (id) => async (dispatch) => {
     dispatch({ type: FAVORITE_TRX_REQUEST });
     const response = await api.delete(`favorites/${id}`);
 
-    if (response.status === 204) {
-      return dispatch({
-        type: FAVORITE_TRX_SUCCESS,
-        payload: response.data.id
-      });
-    }
-
-    return dispatch({ type: FAVORITE_TRX_ERROR });
+    return dispatch({
+      type: FAVORITE_TRX_SUCCESS,
+      payload: response.data.id
+    });
   } catch (err) {
     return dispatch({ type: FAVORITE_TRX_ERROR });
   }
