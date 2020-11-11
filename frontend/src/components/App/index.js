@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
@@ -9,7 +9,8 @@ import FavoriteSwitch from '../FavoriteSwitch';
 
 import { DetailContext } from '../../appContexts';
 import { DEVICE_SIZE } from '../../constants';
-import FavoritesList from '../FavoritesList';
+import Loading from '../Loading';
+const FavoritesList = lazy(() => import('../FavoritesList'));
 
 const Container = styled.div`
   height: 100vh;
@@ -28,7 +29,13 @@ export default () => {
     <Container>
       <DetailContext.Provider value={{ entity: showDetailed, showDetailFor }}>
         <PostList isMobile={!isTabletOrBigger} />
-        {showFavorites ? <FavoritesList /> : <PostDetail />}
+        {showFavorites ? (
+          <Suspense fallback={<Loading />}>
+            <FavoritesList />
+          </Suspense>
+        ) : (
+          <PostDetail />
+        )}
         <FavoriteSwitch handleToogle={toogleShowFavorites} />
         <ToastContainer
           position="bottom-center"
